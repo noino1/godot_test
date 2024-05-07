@@ -1,8 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 
-component/
-entity/
-prefabs/
-resources/
-scenes/
+/component/
+/entity/
+/prefabs/
+/resources/
+/scenes/
