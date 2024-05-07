@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkic664mhmxev"]
+
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_igs5r"]
+
+[sub_resource type="GDScript" id="GDScript_tkyg8"]
+resource_name = "faceman"
+script/source = "extends CharacterBody2D
+
+@export var speed := 200
+var a =11
+
+func _physics_process(delta: float) -> void:
+	velocity = get_input() * speed
+	move_and_slide()
+
+func get_input():
+	var direction = Input.get_vector('ui_left', 'ui_right', 'ui_up', 'ui_down')
+	return direction
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3jqyl"]
+
+[node name="Faceman" type="CharacterBody2D"]
+motion_mode = 1
+script = SubResource("GDScript_tkyg8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_igs5r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3jqyl")

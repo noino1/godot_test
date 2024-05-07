@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://m4m5h2tmk2jv"]
+
+[ext_resource type="Texture2D" uid="uid://uhfkwm7scq15" path="res://asset/textrue/dotRed.png" id="1_77ba8"]
+
+[node name="RedBall" type="Sprite2D"]
+texture = ExtResource("1_77ba8")

@@ -1,0 +1,173 @@
+[gd_scene load_steps=14 format=3 uid="uid://dltithafxfdt1"]
+
+[ext_resource type="PackedScene" uid="uid://dx6g33ydkqcy" path="res://scenes/test/转运小球/faceman.tscn" id="1_qy27a"]
+[ext_resource type="PackedScene" uid="uid://ciagbc0qbxisl" path="res://scenes/test/转运小球/side_red.tscn" id="2_7kw00"]
+[ext_resource type="PackedScene" uid="uid://0s4xqnlv8rr0" path="res://scenes/test/转运小球/side_yellow.tscn" id="3_ff281"]
+[ext_resource type="PackedScene" uid="uid://m4m5h2tmk2jv" path="res://scenes/test/转运小球/red_ball.tscn" id="4_8tge3"]
+[ext_resource type="PackedScene" uid="uid://cuuupuarmgll5" path="res://scenes/test/转运小球/yellow_ball.tscn" id="5_lobtg"]
+
+[sub_resource type="GDScript" id="GDScript_gwom6"]
+resource_name = "test3"
+script/source = "extends Node2D
+
+@export var faceman_scn:PackedScene
+@export var sides:Array[PackedScene]
+@onready var path_follow_2d: PathFollow2D = $Path2D/PathFollow2D
+
+func _ready() -> void:
+	for i in 3:
+		create_faceman()
+	
+func create_faceman():
+	var faceman_instance = faceman_scn.instantiate()
+	faceman_instance.set_side(sides.pick_random())
+	faceman_instance.setup(get_rnd_spawn_pos())
+	add_child(faceman_instance)
+	
+func get_rnd_spawn_pos() -> Vector2:
+	path_follow_2d.progress_ratio = randf()
+	return path_follow_2d.global_position
+
+
+func _on_timer_timeout() -> void:
+	for i in 3:
+		create_faceman()
+"
+
+[sub_resource type="Curve2D" id="Curve2D_n05dw"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1114, 30, 0, 0, 0, 0, 1130, 619)
+}
+point_count = 2
+
+[sub_resource type="GDScript" id="GDScript_tje13"]
+resource_name = "check_line"
+script/source = "extends ColorRect
+@onready var marker_2d_red: Marker2D = $\"../RedRegion/Marker2D_Red\"
+@onready var marker_2d_yellow: Marker2D = $\"../YellowRegion/Marker2D_Yellow\"
+
+@export var RED_BALL:PackedScene
+@export var YELLOW_BALL:PackedScene
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	#print('body:', body)
+	var side = body.side_check()
+	#print(side)
+	match side:
+		'no_side':
+			pass
+		'side_red':
+			print('side_red')
+			plant_ball(body, RED_BALL)
+			body.update_target(marker_2d_red.global_position)
+		'side_yellow':
+			print('side_yellow')
+			plant_ball(body, YELLOW_BALL)
+			body.update_target(marker_2d_yellow.global_position)
+	
+func plant_ball(body, ball:PackedScene):
+	var ball_instance = ball.instantiate()
+	body.add_child(ball_instance)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8700"]
+size = Vector2(41, 715)
+
+[sub_resource type="GDScript" id="GDScript_nxxfb"]
+resource_name = "RedRegion"
+script/source = "extends ColorRect
+
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	body.queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1guex"]
+size = Vector2(171, 170)
+
+[sub_resource type="GDScript" id="GDScript_w5740"]
+resource_name = "YellowRegion"
+script/source = "extends ColorRect
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	body.queue_free()
+	pass # Replace with function body.
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_426fs"]
+size = Vector2(171, 170)
+
+[node name="转运小球" type="Node2D"]
+script = SubResource("GDScript_gwom6")
+faceman_scn = ExtResource("1_qy27a")
+sides = Array[PackedScene]([ExtResource("2_7kw00"), ExtResource("3_ff281")])
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-28, -7)
+curve = SubResource("Curve2D_n05dw")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(1114, 30)
+rotation = 1.54364
+
+[node name="CheckLine" type="ColorRect" parent="."]
+offset_left = 633.0
+offset_top = -32.0
+offset_right = 661.0
+offset_bottom = 677.0
+color = Color(0.14902, 0.388235, 0, 1)
+script = SubResource("GDScript_tje13")
+RED_BALL = ExtResource("4_8tge3")
+YELLOW_BALL = ExtResource("5_lobtg")
+
+[node name="Area2D" type="Area2D" parent="CheckLine"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckLine/Area2D"]
+position = Vector2(14.5, 352.5)
+shape = SubResource("RectangleShape2D_y8700")
+
+[node name="Marker2D" type="Marker2D" parent="CheckLine"]
+position = Vector2(15, 352)
+
+[node name="RedRegion" type="ColorRect" parent="."]
+offset_right = 150.0
+offset_bottom = 150.0
+color = Color(1, 0.294118, 0.231373, 1)
+script = SubResource("GDScript_nxxfb")
+
+[node name="Marker2D_Red" type="Marker2D" parent="RedRegion"]
+position = Vector2(75, 76)
+
+[node name="Area2D" type="Area2D" parent="RedRegion"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedRegion/Area2D"]
+position = Vector2(75.5, 75)
+shape = SubResource("RectangleShape2D_1guex")
+
+[node name="YellowRegion" type="ColorRect" parent="."]
+offset_left = 12.0
+offset_top = 485.0
+offset_right = 162.0
+offset_bottom = 635.0
+color = Color(1, 1, 0, 1)
+script = SubResource("GDScript_w5740")
+
+[node name="Area2D" type="Area2D" parent="YellowRegion"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YellowRegion/Area2D"]
+position = Vector2(75.5, 75)
+shape = SubResource("RectangleShape2D_426fs")
+
+[node name="Marker2D_Yellow" type="Marker2D" parent="YellowRegion"]
+position = Vector2(76, 77)
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="body_entered" from="CheckLine/Area2D" to="CheckLine" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="RedRegion/Area2D" to="RedRegion" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="YellowRegion/Area2D" to="YellowRegion" method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

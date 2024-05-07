@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgaf4p4hs6wm4"]
+
+[sub_resource type="GDScript" id="GDScript_tdark"]
+resource_name = "test2"
+script/source = "extends Node2D
+#Test Block Input
+# 模拟输入禁用
+signal blocked(wether:bool)
+signal blocked_interval(interval:float)
+
+var is_block = false
+				
+func _ready() -> void:
+	#$Timer.connect('timeout', func ():emit_signal('blocked', true))
+	pass
+		
+func _process(delta: float) -> void:
+	var res = get_input()
+	if res == Vector2.ZERO:
+		return
+	print(res)
+	
+	
+func get_input():
+	if is_block:
+		return Vector2.ZERO
+	return Vector2(randf_range(1,100),randf_range(1,100))
+
+
+func _on_blocked(wether: bool) -> void:
+	is_block = wether
+
+func _on_blocked_interval(interval: float) -> void:
+	is_block = true
+	#get_tree().create_timer(interval).timeout.connect(func (): is_block = false)
+	create_tween().tween_callback(func (): is_block = false).set_delay(interval)
+"
+
+[sub_resource type="GDScript" id="GDScript_jsk3n"]
+resource_name = "Button"
+script/source = "extends Button
+
+@onready var node: = get_parent()
+
+func _on_pressed() -> void:
+	if node:
+		node.emit_signal('blocked_interval', randf_range(1,3))
+"
+
+[node name="TestBlockInput" type="Node2D"]
+script = SubResource("GDScript_tdark")
+
+[node name="Button" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "btn1"
+script = SubResource("GDScript_jsk3n")
+
+[connection signal="blocked" from="." to="." method="_on_blocked"]
+[connection signal="blocked_interval" from="." to="." method="_on_blocked_interval"]
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

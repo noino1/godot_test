@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://bkxgd4l36t5u7"]
+
+[node name="SideDark" type="Node" groups=["dark"]]

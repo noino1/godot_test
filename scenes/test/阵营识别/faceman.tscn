@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://cgiytp4n4ga7h"]
+
+[ext_resource type="PackedScene" uid="uid://vf88k5k8icdl" path="res://scenes/test/阵营识别/face_side.tscn" id="1_5tq77"]
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_p4187"]
+
+[sub_resource type="GDScript" id="GDScript_4q84r"]
+resource_name = "face_man"
+script/source = "extends Sprite2D
+
+
+func _on_face_area_area_entered(area: Area2D) -> void:
+	print('area: ', area, ' from face_man')
+	pass # Replace with function body.
+"
+
+[sub_resource type="GDScript" id="GDScript_7r6hp"]
+resource_name = "face_area"
+script/source = "extends Area2D
+
+
+func _on_area_entered(area: Area2D) -> void:
+	print('area: ', area, ' from face_area')
+	pass # Replace with function body.
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n2jsx"]
+size = Vector2(57, 58)
+
+[node name="Faceman" type="Sprite2D"]
+texture = ExtResource("1_p4187")
+script = SubResource("GDScript_4q84r")
+
+[node name="face_side" parent="." instance=ExtResource("1_5tq77")]
+
+[node name="face_area" type="Area2D" parent="."]
+script = SubResource("GDScript_7r6hp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="face_area"]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_n2jsx")

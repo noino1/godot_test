@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://duehqvk7vajke"]
+
+[ext_resource type="Texture2D" uid="uid://chjd6cah23c32" path="res://asset/textrue/dotBlue.png" id="1_rvq8f"]
+
+[sub_resource type="GDScript" id="GDScript_4qk8q"]
+resource_name = "ball"
+script/source = "extends Sprite2D
+
+signal launched(start_pos, dir)
+
+var speed = 100
+var direction = Vector2.ZERO
+
+func _ready() -> void:
+	launched.connect(start)
+	set_process(false)
+	
+
+func _process(delta: float) -> void:
+	translate(direction * speed * delta)
+
+func start( start_pos, dir: Vector2):
+	prints('name: ',name, ' start!', start_pos, dir)
+	global_position = start_pos
+	direction = dir
+	
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	print('outside screen')
+	queue_free()
+
+func _on_ready() -> void:
+	set_process(true)
+"
+
+[node name="ball" type="Sprite2D"]
+texture = ExtResource("1_rvq8f")
+script = SubResource("GDScript_4qk8q")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

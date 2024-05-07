@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://dclesoim2aler"]
+
+[ext_resource type="PackedScene" uid="uid://c1kbsmvb4w4kh" path="res://prefabs/character_base.tscn" id="1_ww0pv"]
+[ext_resource type="Script" path="res://prefabs/player.gd" id="2_5o2gu"]
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="3_6pb54"]
+[ext_resource type="PackedScene" uid="uid://bnv2owxxq6vq4" path="res://component/controller.tscn" id="4_d6ugw"]
+[ext_resource type="PackedScene" uid="uid://db4x5fwutgjg8" path="res://component/physics.tscn" id="5_0woka"]
+[ext_resource type="Script" path="res://resources/physics_data/physics_data.gd" id="6_4nqua"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1dd5d"]
+radius = 32.0624
+
+[sub_resource type="Resource" id="Resource_jtb3n"]
+resource_local_to_scene = true
+script = ExtResource("6_4nqua")
+accel = 200.0
+max_speed = 350.0
+friction = 0.146
+
+[node name="Player" node_paths=PackedStringArray("_physics", "_controller") instance=ExtResource("1_ww0pv")]
+script = ExtResource("2_5o2gu")
+_physics = NodePath("Component/physics")
+_controller = NodePath("Component/Controller")
+
+[node name="Skin" parent="." index="0"]
+texture = ExtResource("3_6pb54")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_1dd5d")
+
+[node name="Controller" parent="Component" index="0" instance=ExtResource("4_d6ugw")]
+
+[node name="physics" parent="Component" index="1" instance=ExtResource("5_0woka")]
+_args = SubResource("Resource_jtb3n")
+
+[connection signal="direction_changed" from="Component/Controller" to="Component/physics" method="_on_controller_direction_changed"]

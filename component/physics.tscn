@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://db4x5fwutgjg8"]
+
+[ext_resource type="Script" path="res://component/physics.gd" id="1_ker4n"]
+
+[node name="physics" type="Node"]
+editor_description = "对velocity施加物理效果的component
+需要direction"
+script = ExtResource("1_ker4n")

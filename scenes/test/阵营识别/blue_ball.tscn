@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtqrplfh32ahf"]
+
+[ext_resource type="Texture2D" uid="uid://chjd6cah23c32" path="res://asset/textrue/dotBlue.png" id="1_k2l50"]
+[ext_resource type="PackedScene" uid="uid://mjdpo7xcma1w" path="res://scenes/test/阵营识别/blue_side.tscn" id="2_21lx8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_18vsy"]
+radius = 12.0
+
+[node name="BlueBall" type="Sprite2D"]
+texture = ExtResource("1_k2l50")
+
+[node name="BlueSide" parent="." instance=ExtResource("2_21lx8")]
+
+[node name="CollisionShape2D" parent="BlueSide" index="0"]
+shape = SubResource("CircleShape2D_18vsy")
+
+[connection signal="area_entered" from="BlueSide" to="BlueSide" method="_on_area_entered"]
+
+[editable path="BlueSide"]

@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcmrxbjilu8ib"]
+
+[ext_resource type="Texture2D" uid="uid://uhfkwm7scq15" path="res://asset/textrue/dotRed.png" id="1_b8cht"]
+[ext_resource type="PackedScene" uid="uid://b3ui8b3cf18il" path="res://scenes/test/test_picking/picked_component.tscn" id="2_gaswm"]
+
+[sub_resource type="GDScript" id="GDScript_lbk7m"]
+resource_name = "ball"
+script/source = "extends Sprite2D
+
+@onready var picked_component: Area2D = $PickedComponent
+@onready var collision_shape_2d: CollisionShape2D = $PickedComponent/CollisionShape2D
+
+var target:Node2D
+var speed = 150
+var stop_radius = 5
+
+func _ready() -> void:	
+	set_process(false)
+
+func _process(delta: float) -> void:
+	if target:
+		global_position = global_position.move_toward(target.global_position, delta * speed)
+		if global_position.distance_to(target.global_position) < stop_radius:
+			call_deferred('clear')
+	
+func _on_picked_component_area_entered(area: Area2D) -> void:
+	target = area.owner
+	print('target: ',target)
+	set_process(true)
+	#picked_component.monitoring = false
+	#create_tween().tween_callback(func (): picked_component.monitoring = false)
+	#picked_component.call_deferred('close_area')
+	#picked_component.call_deferred('set', 'monitoring', false)
+	#(func():picked_component.monitoring = false).call_deferred()
+	#picked_component.get_children()[0].call_deferred('set','disabled', true)
+	collision_shape_2d.call_deferred('set','disabled', true)
+	
+func clear():
+	print('arrived !')
+	print('monitoring: ', picked_component.monitoring)
+	#queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tf731"]
+radius = 200.0
+
+[node name="ball" type="Sprite2D"]
+texture = ExtResource("1_b8cht")
+script = SubResource("GDScript_lbk7m")
+
+[node name="PickedComponent" parent="." instance=ExtResource("2_gaswm")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickedComponent"]
+shape = SubResource("CircleShape2D_tf731")
+
+[connection signal="area_entered" from="PickedComponent" to="." method="_on_picked_component_area_entered"]

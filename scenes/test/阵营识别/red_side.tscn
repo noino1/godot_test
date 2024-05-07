@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg862ivbe101m"]
+
+[sub_resource type="GDScript" id="GDScript_jfh2n"]
+resource_name = "redside"
+script/source = "extends Area2D
+# redside
+@export var side:Game.Side = Game.Side.RedSide
+var side_str:StringName:
+	set(value):
+		side = Game.Side[value]
+	get:
+		return Game.Side.keys()[side]
+
+func _ready() -> void:
+	pass
+
+func _process(delta: float) -> void:
+	pass
+
+func _on_area_entered(area: Area2D) -> void:
+	print('area: ', area)
+	if is_same_side(area) == true:
+		#print('相同 ', side_str, ' other:', area.side_str )
+		pass
+	else :
+		print('不同 ', side_str, ' other:', area.side_str )
+		if area.has_method('disapper') == true:
+			area.disapper()
+		
+func disapper():
+	owner.visible = false
+	
+func is_same_side(other):
+	return side == other.side
+	
+"
+
+[node name="RedSide" type="Area2D" groups=["RedSide"]]
+script = SubResource("GDScript_jfh2n")

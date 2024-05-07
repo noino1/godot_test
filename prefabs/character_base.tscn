@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1kbsmvb4w4kh"]
+
+[ext_resource type="Script" path="res://prefabs/character_base.gd" id="1_kbncm"]
+
+[node name="CharacterBase" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_kbncm")
+
+[node name="Skin" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Component" type="Node" parent="."]
+editor_description = "一个有提示作用的占位节点,将component作为其子节点添加"

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3ui8b3cf18il"]
+
+[ext_resource type="Script" path="res://scenes/test/test_picking/picked_component.gd" id="1_lbgh4"]
+
+[node name="PickedComponent" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_lbgh4")

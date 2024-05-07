@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnv2owxxq6vq4"]
+
+[ext_resource type="Script" path="res://component/controller.gd" id="1_svdgd"]
+
+[node name="Controller" type="Node"]
+editor_description = "一个提供input的component,向信号订阅者发送input数据"
+script = ExtResource("1_svdgd")

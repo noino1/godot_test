@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqmsuq0bvks35"]
+
+[ext_resource type="Texture2D" uid="uid://b6btm2o72dc7f" path="res://asset/textrue/dotGreen.png" id="1_x88ep"]
+
+[sub_resource type="GDScript" id="GDScript_stsj7"]
+script/source = "extends Node2D
+
+func _ready() -> void:
+	#print('owner: ', owner, ' from dot')
+	pass
+
+func _on_ready() -> void:
+	print('owner: ', owner, ' from dot')
+	pass # Replace with function body.
+"
+
+[sub_resource type="GDScript" id="GDScript_cha3n"]
+script/source = "extends Sprite2D
+
+func _ready() -> void:
+	print('owner: ', owner, ' from skin')
+"
+
+[node name="Dot" type="Node2D"]
+script = SubResource("GDScript_stsj7")
+
+[node name="Skin" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_x88ep")
+script = SubResource("GDScript_cha3n")
+
+[connection signal="ready" from="." to="." method="_on_ready"]

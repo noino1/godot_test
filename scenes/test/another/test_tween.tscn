@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://begskbloyjhin"]
+
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_x2v07"]
+
+[sub_resource type="GDScript" id="GDScript_dhfdr"]
+script/source = "extends Node2D
+@onready var faceman: Sprite2D = $Faceman
+
+func _ready() -> void:
+	#var tween:Tween = create_tween()
+	#tween.tween_callback(func (): print('tween_callback!')).set_delay(1)
+	#get_tree().create_timer(1).timeout.connect(func (): print('tween_callback!'))
+	f2()
+
+func f2():
+	# 顺序执行
+	var tween:Tween = create_tween()
+	tween.step_finished.connect(func (index): print(index))
+	
+	tween.tween_property(faceman, 'position', Vector2(166, 91), 1)
+	tween.tween_property(faceman, 'scale', Vector2(1, 1), 1)
+	print('end!')
+	
+	
+	
+func f3():
+	var tween = create_tween()
+	#tween.tween_property(faceman, \"position\", Vector2.RIGHT * 300, 1).as_relative().set_trans(Tween.TRANS_SINE)
+	#tween.tween_property(faceman, \"position\", Vector2.RIGHT * 300, 1).as_relative().from_current().set_trans(Tween.TRANS_EXPO)
+	
+	
+	tween.tween_property(faceman, \"position\", Vector2(200, 100), 1)
+	tween.tween_property(faceman, \"position\", Vector2(200, 100), 1).from_current()
+
+
+"
+
+[node name="TestTween" type="Node2D"]
+script = SubResource("GDScript_dhfdr")
+
+[node name="Faceman" type="Sprite2D" parent="."]
+position = Vector2(38, 33)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_x2v07")

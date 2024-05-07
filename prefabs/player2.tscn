@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://60d0gek23bpy"]
+
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_tqphu"]
+[ext_resource type="PackedScene" uid="uid://c6pob0y862rk3" path="res://common/side_light.tscn" id="2_ujcrk"]
+
+[sub_resource type="GDScript" id="GDScript_nluw6"]
+resource_name = "player2"
+script/source = "extends CharacterBody2D
+
+func _ready() -> void:
+	#printt(get_tree().has_group('dark'), get_tree().has_group('light'))
+	print(get_side())
+
+func get_side():
+	var sides = Game.Side.keys()
+	var sides_dir = {}
+	#print('side count: ',sides)
+	for side in sides:
+		var res = get_tree().has_group(side)
+		sides_dir[side] = res
+	
+	return sides_dir
+"
+
+[node name="player2" type="CharacterBody2D"]
+script = SubResource("GDScript_nluw6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tqphu")
+
+[node name="SideLight" parent="." instance=ExtResource("2_ujcrk")]

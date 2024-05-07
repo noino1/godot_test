@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://c6pob0y862rk3"]
+
+[node name="SideLight" type="Node" groups=["light"]]

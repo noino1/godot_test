@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://y5yxax8fjkek"]
+
+[ext_resource type="Script" path="res://scenes/test/物理组件化1/faceman.gd" id="1_1sl7e"]
+[ext_resource type="Texture2D" uid="uid://bgwuwgy68g7l5" path="res://icon.svg" id="1_2gua3"]
+[ext_resource type="PackedScene" uid="uid://bnv2owxxq6vq4" path="res://component/controller.tscn" id="2_g1w7o"]
+[ext_resource type="PackedScene" uid="uid://db4x5fwutgjg8" path="res://component/physics.tscn" id="4_dwwti"]
+[ext_resource type="Script" path="res://resources/physics_data/physics_data.gd" id="5_mfn2e"]
+
+[sub_resource type="Resource" id="Resource_jcgks"]
+resource_local_to_scene = true
+script = ExtResource("5_mfn2e")
+accel = 200.0
+max_speed = 350.0
+friction = 0.146
+
+[node name="Test1" type="Node"]
+
+[node name="Faceman" type="CharacterBody2D" parent="." node_paths=PackedStringArray("physics_component")]
+motion_mode = 1
+script = ExtResource("1_1sl7e")
+physics_component = NodePath("Component/physics")
+
+[node name="Sprite2D" type="Sprite2D" parent="Faceman"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_2gua3")
+
+[node name="Component" type="Node" parent="Faceman"]
+editor_description = "一个有提示作用的占位节点,将component作为其子节点添加"
+
+[node name="Controller" parent="Faceman/Component" instance=ExtResource("2_g1w7o")]
+
+[node name="physics" parent="Faceman/Component" instance=ExtResource("4_dwwti")]
+_args = SubResource("Resource_jcgks")
+
+[connection signal="direction_changed" from="Faceman/Component/Controller" to="Faceman" method="_on_controller_direction_changed"]
+[connection signal="direction_changed" from="Faceman/Component/Controller" to="Faceman/Component/physics" method="_on_controller_direction_changed"]

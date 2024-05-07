@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs3yr1bcv58v1"]
+
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_xdnc3"]
+[ext_resource type="PackedScene" uid="uid://12syapk8u2wt" path="res://scenes/test/test_picking/collection_component.tscn" id="2_kxls0"]
+
+[sub_resource type="GDScript" id="GDScript_tkyg8"]
+resource_name = "faceman"
+script/source = "extends CharacterBody2D
+
+@export var speed := 200
+
+
+func _physics_process(delta: float) -> void:
+	velocity = get_input() * speed
+	move_and_slide()
+
+func get_input():
+	var direction = Input.get_vector('ui_left', 'ui_right', 'ui_up', 'ui_down')
+	return direction
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3jqyl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1wh4r"]
+radius = 31.4006
+
+[node name="Faceman" type="CharacterBody2D"]
+motion_mode = 1
+script = SubResource("GDScript_tkyg8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xdnc3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3jqyl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollectionComponent" parent="." instance=ExtResource("2_kxls0")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectionComponent"]
+shape = SubResource("CircleShape2D_1wh4r")

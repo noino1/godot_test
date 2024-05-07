@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cske4jb0sb67i"]
+
+[ext_resource type="Script" path="res://scenes/test/another/test_signal.gd" id="1_aoypq"]
+[ext_resource type="Texture2D" uid="uid://chjd6cah23c32" path="res://asset/textrue/dotBlue.png" id="2_4xkht"]
+
+[sub_resource type="GDScript" id="GDScript_ctjun"]
+resource_name = "btn1"
+script/source = "extends Button
+
+var parent_blocked:Signal
+signal pos_sent(pos: Vector2)
+
+
+func _ready() -> void:
+	await get_parent().ready
+	parent_blocked = Signal(get_parent().blocked)
+	pass
+	
+
+func get_timer(sec:float = 1):
+	return get_tree().create_timer(sec)
+	
+
+func _on_pressed() -> void:
+	var node = $\"../Sprite2D2\"
+	var pos = Vector2(randf_range(20,300), randf_range(10,200))
+	print(pos)
+	pos_sent.connect(Callable(node, 'set_position'), CONNECT_ONE_SHOT)
+	emit_signal('pos_sent',pos)
+
+
+"
+
+[node name="TestSignal" type="Node2D"]
+script = ExtResource("1_aoypq")
+
+[node name="btn1" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1.0
+offset_top = 171.0
+offset_right = 43.0
+offset_bottom = 202.0
+grow_horizontal = 0
+text = "btn1"
+script = SubResource("GDScript_ctjun")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(288, 28)
+texture = ExtResource("2_4xkht")
+
+[connection signal="pressed" from="btn1" to="btn1" method="_on_pressed"]

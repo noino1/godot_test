@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7phljq2w2fvw"]
+
+[ext_resource type="Texture2D" uid="uid://uhfkwm7scq15" path="res://asset/textrue/dotRed.png" id="1_j2exs"]
+[ext_resource type="PackedScene" uid="uid://dg862ivbe101m" path="res://scenes/test/阵营识别/red_side.tscn" id="2_qmg4f"]
+
+[sub_resource type="GDScript" id="GDScript_b1xtu"]
+resource_name = "red_ball"
+script/source = "extends Sprite2D
+# RedBall
+
+func _ready() -> void:
+	pass
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ssemh"]
+radius = 12.0
+
+[node name="RedBall" type="Sprite2D"]
+texture = ExtResource("1_j2exs")
+script = SubResource("GDScript_b1xtu")
+
+[node name="RedSide" parent="." instance=ExtResource("2_qmg4f")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedSide"]
+shape = SubResource("CircleShape2D_ssemh")
+
+[connection signal="area_entered" from="RedSide" to="RedSide" method="_on_area_entered"]

@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx6g33ydkqcy"]
+
+[ext_resource type="Texture2D" uid="uid://co6tic0vcrqoy" path="res://asset/textrue/icon.png" id="1_0uln4"]
+
+[sub_resource type="GDScript" id="GDScript_jlmnk"]
+resource_name = "faceman"
+script/source = "extends CharacterBody2D
+
+var target:Vector2 
+var move_speed:float = 150
+var step1 = true
+var step2 = false
+
+
+func _ready() -> void:
+	pass
+
+func _process(delta: float) -> void:
+	if step1:
+		step_1(delta)
+		print('setp1')
+	if step2:
+		global_position = global_position.move_toward(target, delta * move_speed)
+		print('setp2')
+		
+func switch(step:bool):
+	step1 = step
+	step2 = not step
+
+func step_1(delta):
+	switch(step1)
+	translate(Vector2.LEFT * move_speed * delta)
+
+func setup(start_pos:Vector2):
+	global_position = start_pos
+	
+func update_target(target_pos):
+	switch(step2)
+	target = target_pos
+
+func side_check():
+	var children = $Side.get_children()
+	if children.size() == 0:
+		return 'no_side'
+	for child in children:
+		if child.is_in_group('side_red'):
+			return 'side_red'
+		if child.is_in_group('side_yellow'):
+			return 'side_yellow'
+			
+func set_side(side_scene: PackedScene):
+	$Side.add_child(side_scene.instantiate())
+	
+	
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2w44u"]
+radius = 32.1403
+
+[node name="Faceman" type="CharacterBody2D"]
+collision_mask = 0
+script = SubResource("GDScript_jlmnk")
+
+[node name="Side" type="Node" parent="."]
+
+[node name="Skin" type="Sprite2D" parent="."]
+texture = ExtResource("1_0uln4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2w44u")

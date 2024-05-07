@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://mjdpo7xcma1w"]
+
+[sub_resource type="GDScript" id="GDScript_au4mv"]
+resource_name = "blue_side"
+script/source = "extends Area2D
+
+@export var side:Game.Side = Game.Side.BlueSide
+
+var side_str:StringName:
+	set(value):
+		side = Game.Side[value]
+	get:
+		return Game.Side.keys()[side]
+
+func _ready() -> void:
+	#print(Game.Side.keys()[side])
+	pass
+
+func _on_area_entered(area: Area2D) -> void:
+	print('area: ', area)
+	if is_same_side(area) == true:
+		
+		print('相同 ', side_str, ' other:', area.side_str )
+	else :
+		print('不同 ', side_str, ' other:', area.side_str )
+		if area.has_method('disapper') == true:
+			print('has disapper')
+			area.disapper()
+			
+func disapper():
+	owner.visible = false
+	
+func is_same_side(other):
+	return side == other.side
+"
+
+[node name="BlueSide" type="Area2D" groups=["BlueSide"]]
+script = SubResource("GDScript_au4mv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://2t3g4cttydou"]
+
+[ext_resource type="PackedScene" uid="uid://bcgjm61plxhc" path="res://scenes/test/another/path2d_pathfinding/pathfinding.tscn" id="1_cvvo5"]
+[ext_resource type="Texture2D" uid="uid://d4j0u8p5em0yv" path="res://asset/textrue/tank_green.png" id="2_4j70n"]
+
+[node name="TestPath" type="Node2D"]
+
+[node name="Pathfinding" parent="." instance=ExtResource("1_cvvo5")]
+node_path = NodePath("../Arrow")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_4j70n")

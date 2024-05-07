@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyj3d1vwuydd5"]
+
+[ext_resource type="PackedScene" uid="uid://dtqrplfh32ahf" path="res://scenes/test/阵营识别/blue_ball.tscn" id="1_yf8g0"]
+[ext_resource type="PackedScene" uid="uid://c7phljq2w2fvw" path="res://scenes/test/阵营识别/red_ball.tscn" id="2_g181e"]
+[ext_resource type="PackedScene" uid="uid://cgiytp4n4ga7h" path="res://scenes/test/阵营识别/faceman.tscn" id="3_kbrhr"]
+
+[sub_resource type="GDScript" id="GDScript_lyyjj"]
+resource_name = "test_side"
+script/source = "extends Node2D
+
+@export var target_ctrled:Node2D
+
+func _ready() -> void:
+	if target_ctrled == null:
+		printerr('target_ctrled == false')
+	
+	#print(Game.Side2.keys()[0])
+	
+func _unhandled_input(event: InputEvent) -> void:
+	pass
+	
+func _process(delta: float) -> void:
+	if target_ctrled:
+		target_ctrled.global_position = get_global_mouse_position()
+		
+"
+
+[node name="TestSide" type="Node2D" node_paths=PackedStringArray("target_ctrled")]
+script = SubResource("GDScript_lyyjj")
+target_ctrled = NodePath("RedBall")
+
+[node name="Faceman" parent="." instance=ExtResource("3_kbrhr")]
+position = Vector2(369, 267)
+
+[node name="BlueBall" parent="." instance=ExtResource("1_yf8g0")]
+position = Vector2(278, 104)
+
+[node name="RedBall" parent="." instance=ExtResource("2_g181e")]
+position = Vector2(449, 122)
+
+[node name="RedBall2" parent="." instance=ExtResource("2_g181e")]
+position = Vector2(301, 167)

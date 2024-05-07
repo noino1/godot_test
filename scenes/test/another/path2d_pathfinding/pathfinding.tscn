@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcgjm61plxhc"]
+
+[sub_resource type="GDScript" id="GDScript_qwj10"]
+resource_name = "pathfinding"
+script/source = "extends Node
+@onready var remote_transform_2d: RemoteTransform2D = $Path2D/PathFollow2D/RemoteTransform2D
+@onready var path_2d: Path2D = $Path2D
+@onready var path_follow_2d: PathFollow2D = $Path2D/PathFollow2D
+
+@export var node_path :NodePath
+@export var pathfollow_speed:float = 0.3
+@export var start = true
+
+func _ready() -> void:
+	
+	printt(node_path,  remote_transform_2d.remote_path)
+	#remote_transform_2d.remote_path = node_path
+	printt(node_path,  remote_transform_2d.remote_path)
+	
+	
+	print('ready')
+	
+func _process(delta: float) -> void:
+	#remote_transform_2d.remote_path = node_path
+	#remote_transform_2d.force_update_cache()
+	#print(remote_transform_2d.remote_path)
+	path_follow_2d.progress_ratio += pathfollow_speed * delta
+"
+
+[sub_resource type="Curve2D" id="Curve2D_2lmet"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 24, 12, 0, 0, 0, 0, 283, 17, 0, 0, 0, 0, 280, 161, 0, 0, 0, 0, 27, 161, 0, 0, 0, 0, 24, 12)
+}
+point_count = 5
+
+[node name="Pathfinding" type="Node"]
+script = SubResource("GDScript_qwj10")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_2lmet")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(24, 12)
+rotation = 0.0193026
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]

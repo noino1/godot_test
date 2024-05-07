@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PhysicsData" load_steps=2 format=3 uid="uid://cq3cpbwq21uua"]
+
+[ext_resource type="Script" path="res://resources/physics_data/physics_data.gd" id="1_16atl"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_16atl")
+accel = 200.0
+max_speed = 350.0
+friction = 0.146

@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://vf88k5k8icdl"]
+
+[node name="FaceSide" type="Node" groups=["face_side"]]
